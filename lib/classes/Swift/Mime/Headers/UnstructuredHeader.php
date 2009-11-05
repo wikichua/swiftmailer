@@ -94,15 +94,15 @@ class Swift_Mime_Headers_UnstructuredHeader
    */
   public function getFieldBody()
   {
-    if (!$this->getCachedValue())
+    if (false!==($value=$this->getCachedValue()))
     {
       $this->setCachedValue(
-        str_replace('\\', '\\\\', $this->encodeWords(
+        $value=$this->encodeWords(
           $this, $this->_value, -1, $this->getCharset(), $this->getEncoder()
-          ))
+          )
         );
     }
-    return $this->getCachedValue();
+    return $value;
   }
   
 }
