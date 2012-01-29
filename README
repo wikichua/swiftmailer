@@ -5,6 +5,8 @@ A Laravel Swift Mailer bundle, installable via the Artisan CLI:
 
 php artisan bundle:install swiftmailer
 
+
+
 Swift Mailer, by Chris Corbyn
 -----------------------------
 
