@@ -1,9 +1,9 @@
 Swift Mailer Bundle, by Taylor Otwell
 ---------------------------------------------
 
-A [Laravel](http://laravel.com) Swift Mailer bundle, installable via the Artisan CLI:
+A Laravel Swift Mailer bundle, installable via the Artisan CLI:
 
-    php artisan bundle:install swiftmailer
+php artisan bundle:install swiftmailer
 
 Swift Mailer, by Chris Corbyn
 -----------------------------
