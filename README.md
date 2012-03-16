@@ -4,9 +4,37 @@ A Laravel Swift Mailer bundle, installable via the Artisan CLI:
 
 	php artisan bundle:install swiftmailer
 
-To get a Swift_Mailer instance:
+You must then auto-load the bundle in bundles.php:
+
+	return array(
+		'swiftmailer' => array('auto'=>true)
+	);
+
+In your code, you need to get a Swift_Mailer instance:
 
 	$mailer = IoC::resolve('mailer');
+
+You will also need a message instance that will allow you to construct your message and later send:
+
+	$message = Swift_Message::newInstance('Subject Of Email');
+
+Ultimately the final code to construct a message will look something like this:
+
+	// If you do not want to auto-load the bundle, you can use this
+	Bundle::start('swiftmailer');
+	
+	// Get the Swift Mailer instance
+	$mailer = IoC::resolve('mailer');
+	
+	// Construct the message
+	$message = Swift_Message::newInstance('Message From Website')
+		->setFrom(array('example@example.com'=>'Mr Example'))
+		->setTo(array('example@example.com'=>'Mr Example'))
+		->addPart('My Plain Text Message','text/plain')
+		->setBody('<p>My HTML Message</p>','text/html');
+
+	// Send the email
+	$mailer->send($message);
 
 Or, since your controllers have dynamic access to the IoC container:
 
