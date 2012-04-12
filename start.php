@@ -18,13 +18,13 @@ if (defined('SWIFT_REQUIRED_LOADED'))
 define('SWIFT_REQUIRED_LOADED', true);
 
 //Load Swift utility class
-require dirname(__FILE__) . 'library/classes/Swift.php';
+require dirname(__FILE__) . '/library/classes/Swift.php';
 
 //Start the autoloader
 Swift::registerAutoload();
 
 //Load the init script to set up dependency injection
-require dirname(__FILE__) . 'library/swift_init.php';
+require dirname(__FILE__) . '/library/swift_init.php';
 
 // Register a mailer in the IoC container
 Laravel\IoC::singleton('mailer', function()
