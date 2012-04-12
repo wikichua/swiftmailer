@@ -10,50 +10,33 @@
 
 
 /**
- * Provides fixed-width byte sizes for reading fixed-width character sets.
+ * Analyzes US-ASCII characters.
  * @package Swift
  * @subpackage Encoder
  * @author Chris Corbyn
- * @author Xavier De Cock <xdecock@gmail.com>
  */
-class Swift_CharacterReader_GenericFixedWidthReader
+class Swift_CharacterReader_UsAsciiReader
   implements Swift_CharacterReader
 {
-   
-  /**
-   * The number of bytes in a single character.
-   * @var int
-   * @access private
-   */
-  private $_width;
-	
-  /**
-   * Creates a new GenericFixedWidthReader using $width bytes per character.
-   * @param int $width
-   */
-  public function __construct($width)
-  {
-    $this->_width = $width;
-  }
-
   /**
    * Returns the complete charactermap
    *
    * @param string $string
    * @param int $startOffset
-   * @param array $currentMap
-   * @param mixed $ignoredChars
-   * @return $int
+   * @param string $ignoredChars
    */
   public function getCharPositions($string, $startOffset, &$currentMap, &$ignoredChars)
   {
-  	$strlen = strlen($string);
-  	// % and / are CPU intensive, so, maybe find a better way
-  	$ignored = $strlen%$this->_width;
-  	$ignoredChars = substr($string, - $ignored);
-  	$currentMap = $this->_width;
-  	return ($strlen - $ignored)/$this->_width;
-  	
+    $strlen=strlen($string);
+    $ignoredChars='';
+    for( $i = 0; $i < $strlen; ++$i)
+    {
+      if ($string[$i]>"\x07F")
+      { // Invalid char
+        $currentMap[$i+$startOffset]=$string[$i];
+      }
+    }
+    return $strlen;
   }
   
   /**
@@ -62,9 +45,9 @@ class Swift_CharacterReader_GenericFixedWidthReader
    */
   public function getMapType()
   {
-  	return self::MAP_TYPE_FIXED_LEN;
+    return self::MAP_TYPE_INVALID;
   }
-
+ 
   /**
    * Returns an integer which specifies how many more bytes to read.
    * A positive integer indicates the number of more bytes to fetch before invoking
@@ -76,11 +59,15 @@ class Swift_CharacterReader_GenericFixedWidthReader
    */
   public function validateByteSequence($bytes, $size)
   {
-    $needed = $this->_width - $size;
-    return ($needed > -1)
-      ? $needed
-      : -1
-      ;
+    $byte = reset($bytes);
+    if (1 == count($bytes) && $byte >= 0x00 && $byte <= 0x7F)
+    {
+      return 0;
+    }
+    else
+    {
+      return -1;
+    }
   }
 
   /**
@@ -89,7 +76,7 @@ class Swift_CharacterReader_GenericFixedWidthReader
    */
   public function getInitialByteSize()
   {
-    return $this->_width;
+    return 1;
   }
 
 }
