@@ -40,6 +40,9 @@ Or, since your controllers have dynamic access to the IoC container:
 
 	$this->mailer->send($message);
 
+SMTP Setting please refer to 
+http://forums.laravel.io/viewtopic.php?id=551
+
 ## Swift Mailer, by Chris Corbyn
 
 Swift Mailer is a component based mailing solution for PHP 5.
